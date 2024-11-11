@@ -17,5 +17,19 @@ float compute_iou(const cv::Rect& a, const cv::Rect& b) {
      * 运行测试点，显示通过就行，不通过会告诉你哪一组矩形错了。
     */
     // IMPLEMENT YOUR CODE HERE
-    return 0.f;
+    int x_overlap = std::max(0, std::min(a.x + a.width, b.x + b.width) - std::max(a.x, b.x));
+    int y_overlap = std::max(0, std::min(a.y + a.height, b.y + b.height) - std::max(a.y, b.y));
+    int intersection_area = x_overlap * y_overlap;
+
+    int area_a = a.width * a.height;
+    int area_b = b.width * b.height;
+    int union_area = area_a + area_b - intersection_area;
+
+    if (union_area == 0) {
+        return 0.0f;
+    }
+
+    float iou = static_cast<float>(intersection_area) / union_area;
+
+    return iou;
 }

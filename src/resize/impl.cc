@@ -13,7 +13,22 @@ cv::Mat my_resize(const cv::Mat& input, float scale) {
      * 通过条件：
      * 运行测试点，你的结果跟答案长的差不多就行。
      */
-    int new_rows = input.rows * scale, new_cols = input.cols * scale;
-    // IMPLEMENT YOUR CODE HERE
-    return cv::Mat::zeros(new_rows, new_cols, input.type());
+    int new_rows = static_cast<int>(input.rows * scale);
+    int new_cols = static_cast<int>(input.cols * scale);
+    cv::Mat output(new_rows, new_cols, input.type());
+
+    for (int i = 0; i < new_rows; ++i) {
+        for (int j = 0; j < new_cols; ++j) {
+            int src_x = static_cast<int>(j / scale);
+            int src_y = static_cast<int>(i / scale);
+
+            
+            src_x = std::min(src_x, input.cols - 1);
+            src_y = std::min(src_y, input.rows - 1);
+
+            output.at<uchar>(i, j) = input.at<uchar>(src_y, src_x);
+        }
+    }
+
+    return output;
 }
